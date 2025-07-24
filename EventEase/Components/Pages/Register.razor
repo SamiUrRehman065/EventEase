@@ -1,0 +1,69 @@
+﻿@page "/register/{eventId}"
+@rendermode InteractiveServer
+
+@using EventEase.Models
+@using EventEase.Services
+
+@inject NavigationManager NavManager
+@inject IJSRuntime JS
+@inject MockEventService EventService
+
+<h2 class="text-center mb-4">Register for <span class="text-primary">@SelectedEventName</span></h2>
+
+<div class="card shadow-lg mx-auto" style="max-width: 600px;">
+    <div class="card-body">
+
+        <EditForm Model="@Registration" OnValidSubmit="HandleSubmit" FormName="event-registration-form">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="fullNameInput" class="form-label">Full Name</label>
+                <InputText id="fullNameInput" name="FullName" @bind-Value="Registration.FullName" class="form-control" />
+                <ValidationMessage For="@(() => Registration.FullName)" class="text-danger" />
+            </div>
+
+            <div class="mb-3">
+                <label for="emailInput" class="form-label">Email</label>
+                <InputText id="emailInput" name="Email" @bind-Value="Registration.Email" class="form-control" />
+                <ValidationMessage For="@(() => Registration.Email)" class="text-danger" />
+            </div>
+
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-secondary flex-fill" href="@($"/event-details/{eventId}")">
+                    ← Back to Event Details
+                </a>
+                <button type="submit" class="btn btn-primary flex-fill">
+                    📝 Register
+                </button>
+            </div>
+        </EditForm>
+
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? eventId { get; set; }
+    
+
+    private UserRegistration Registration = new();
+    private string SelectedEventName = "Event";
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(eventId) && string.IsNullOrEmpty(Registration.SelectedEventId))
+        {
+            Registration.SelectedEventId = eventId;
+
+            var evt = EventService.GetEventById(eventId);
+            if (evt is not null)
+                SelectedEventName = evt.Name;
+        }
+    }
+
+    private async void HandleSubmit()
+    {
+        await JS.InvokeVoidAsync("alert", $"✅ Thank you, {Registration.FullName}! You've registered for '{SelectedEventName}'.");
+        NavManager.NavigateTo($"/event-details/{eventId}");
+    }
+}

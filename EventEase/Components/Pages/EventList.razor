@@ -1,0 +1,29 @@
+﻿@page "/"
+@page "/events"
+@using EventEase.Models
+@using EventEase.Services
+@using EventEase.Components.UI  
+@inject MockEventService EventService
+
+
+
+
+
+<h2>Upcoming Events</h2>
+
+@foreach (var evt in Events)
+{
+    <EventCard Event="@evt" />
+}
+
+
+@code {
+    private List<Event> Events = new();
+
+
+    protected override void OnInitialized()
+    {
+        Events = EventService.GetAllEvents();
+
+    }
+}

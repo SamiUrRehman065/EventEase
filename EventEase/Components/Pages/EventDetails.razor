@@ -1,0 +1,50 @@
+﻿@page "/event-details/{id}"
+@using EventEase.Models
+@using EventEase.Services
+@inject MockEventService EventService
+
+
+<h2 class="text-center mb-4">📅 Event Details</h2>
+
+@if (SelectedEvent is not null)
+{
+    <div class="card shadow-lg mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+            <h3 class="card-title text-primary">@SelectedEvent.Name</h3>
+
+            <ul class="list-unstyled mb-3">
+                <li><strong>Date:</strong> @SelectedEvent.Date.ToString("dd MMMM yyyy")</li>
+                <li><strong>Location:</strong> @SelectedEvent.Location</li>
+            </ul>
+
+            <p class="card-text text-muted">@SelectedEvent.Description</p>
+            <div class="d-flex gap-2 mt-3">
+                <a class="btn btn-outline-secondary flex-fill" href="/events">
+                    ← Back to Event List
+                </a>
+                <a class="btn btn-primary flex-fill" href="@($"/register/{SelectedEvent.Id}")">
+                    📝 Register
+                </a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger text-center mt-4">
+        ❌ Sorry, we couldn’t find an event with that ID.
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+    private Event? SelectedEvent;
+
+    protected override void OnParametersSet()
+    {
+        SelectedEvent = EventService.GetEventById(id ?? "");
+    }
+}
