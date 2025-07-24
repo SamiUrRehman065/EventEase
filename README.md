@@ -1,7 +1,3 @@
-Absolutely, Sami — let’s give your GitHub repo a README that reflects your brilliance and showcases EventEase like the modern Blazor marvel it is. Here’s a markdown-ready version you can drop directly into a `README.md` file:
-
----
-
 ## 📦 EventEase — Blazor Event Management App
 
 **EventEase** is a sleek, scalable web application built using Blazor (.NET 8). Designed for tech-savvy organizers and curious attendees, it offers a smooth browsing, registration, and UX experience with responsive design and production-friendly polish.
@@ -40,7 +36,7 @@ Every feature was designed with a mindset of growth: iterating through form bind
 ### 📂 Setup & Run
 
 ```bash
-git clone https://github.com/your-username/EventEase.git
+git clone https://github.com/SamiUrRehman065/EventEase.git
 cd EventEase
 dotnet run
 ```
